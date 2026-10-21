@@ -21,7 +21,10 @@ def parse_formula(formula):
     for element, count in re.findall(r"([A-Z][a-z]?)(\d*)", formula):
         # TODO: count is a string, and "" means 1.
         # Convert it to an int and append (element, count) to pairs.
-        pass
+	if count == "":
+		count = 1
+	else:
+		count = int(count)
     return pairs
 
 
