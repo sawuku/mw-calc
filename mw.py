@@ -14,20 +14,18 @@ ATOMIC_WEIGHTS = {
 
 # Step 2: turn "C6H12O6" into [("C", 6), ("H", 12), ("O", 6)]
 def parse_formula(formula):
-    pairs = []
-    # This regex finds each element and the number after it:
-    #   [A-Z][a-z]? = one capital letter, maybe one lowercase (C, Cl, Na)
-    #   \d*         = zero or more digits
-    for element, count in re.findall(r"([A-Z][a-z]?)(\d*)", formula):
-        # TODO: count is a string, and "" means 1.
-        # Convert it to an int and append (element, count) to pairs.
-        if count == "" :
-            count= 1
-        else:
-            count = int(count)
-            pairs.append((element, count))
-    return pairs
-  
+    stack = [[]]
+    for element, count, open_p, close_p, group in re.findall(r"([A-Z][a-z]?)(\d*)|(\()|(\))(\d*)", formula):
+        if element:
+            stack[-1].append((element, int(count) if count else 1))
+        elif open_p:
+            stack.append([])
+        elif close_p:
+            multiplier = int(group) if group else 1
+            inner = stack.pop()
+            stack[-1].extend((e, c * multiplier) for e, c in inner)
+    return stack[0]
+
 
 # Step 3: add up weight x count for every element
 def molecular_weight(formula):
