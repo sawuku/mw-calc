@@ -44,11 +44,11 @@ def molecular_weight(formula):
 
 # Step 4: read the formula from the command line and print the result
 def main():
-    if (len(sys.argv) != 2:
+    if len(sys.argv) != 2:
         print("Usage: python3 mw.py <formula>")
         sys.exit(1)
     formula = sys.argv[1]
-    print(f"{molecular_weight)formula):, 3f}")
+    print(f"{molecular_weight(formula):.3f}")
     # TODO: sys.argv is a list: ["mw.py", "C6H12O6"]
     # If it doesn't have exactly 2 items, print a usage message and exit.
     # Otherwise print molecular_weight(...) to 3 decimal places.
